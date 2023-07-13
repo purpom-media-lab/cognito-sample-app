@@ -35,6 +35,12 @@ export class CognitoSamleAppStack extends cdk.Stack {
           dataTraceEnabled: true,
           metricsEnabled: true,
         },
+        defaultCorsPreflightOptions: {
+          allowOrigins: cdk.aws_apigateway.Cors.ALL_ORIGINS,
+          allowMethods: cdk.aws_apigateway.Cors.ALL_METHODS,
+          allowHeaders: cdk.aws_apigateway.Cors.DEFAULT_HEADERS,
+          statusCode: 200,
+        },
       }
     );
 
@@ -52,6 +58,15 @@ export class CognitoSamleAppStack extends cdk.Stack {
       },
       lambdaTriggers: {
         customMessage: customMessageTriggerLambda,
+      },
+    });
+
+    const userPoolClient = userPool.addClient("client", {
+      userPoolClientName: "cognito-sample-app-client",
+      preventUserExistenceErrors: true,
+      authFlows: {
+        adminUserPassword: true,
+        userSrp: true,
       },
     });
 

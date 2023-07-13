@@ -36,7 +36,6 @@ export const handler = async (
     throw e;
   }
 
-  console.log("event", event);
   try {
     switch (event.triggerSource) {
       case "CustomMessage_AdminCreateUser": {
@@ -61,7 +60,6 @@ export const handler = async (
       default:
         break;
     }
-    console.log("return!", event);
     return event;
   } catch (e) {
     console.error("Failed to custom message");
