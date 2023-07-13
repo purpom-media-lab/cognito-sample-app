@@ -1,16 +1,66 @@
-import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
+import * as cdk from "aws-cdk-lib";
+import { Runtime } from "aws-cdk-lib/aws-lambda";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { Construct } from "constructs";
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 export class CognitoSamleAppStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    // lambda
+    const inviteUserLambda = new NodejsFunction(this, "inviteUser", {
+      entry: "lambda/invite-user.ts",
+      runtime: Runtime.NODEJS_18_X,
+      environment: {
+        REGION: "ap-northeast-1",
+      },
+    });
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'CognitoSamleAppQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    const customMessageTriggerLambda = new NodejsFunction(
+      this,
+      "customMessageTrigger",
+      {
+        entry: "lambda/custom-message-trigger.ts",
+        runtime: Runtime.NODEJS_18_X,
+      }
+    );
+
+    // api gateway
+    const inviteUserApi = new cdk.aws_apigateway.RestApi(
+      this,
+      "inviteUserApi",
+      {
+        deployOptions: {
+          dataTraceEnabled: true,
+          metricsEnabled: true,
+        },
+      }
+    );
+
+    const inviteUserPath = inviteUserApi.root.addResource("invite-user");
+    const integration = new cdk.aws_apigateway.LambdaIntegration(
+      inviteUserLambda
+    );
+
+    inviteUserPath.addMethod("POST", integration);
+
+    // cognito
+    const userPool = new cdk.aws_cognito.UserPool(this, "sampleUserPool", {
+      signInAliases: {
+        email: true,
+      },
+      lambdaTriggers: {
+        customMessage: customMessageTriggerLambda,
+      },
+    });
+
+    const createCognitoUserPermissionPolicy = new cdk.aws_iam.PolicyStatement({
+      actions: ["cognito-idp:AdminCreateUser"],
+      resources: [userPool.userPoolArn],
+    });
+
+    inviteUserLambda.addToRolePolicy(createCognitoUserPermissionPolicy);
+    inviteUserLambda.addEnvironment("USER_POOL_ID", userPool.userPoolId);
   }
 }
