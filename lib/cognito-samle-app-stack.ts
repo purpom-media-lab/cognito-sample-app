@@ -56,6 +56,9 @@ export class CognitoSamleAppStack extends cdk.Stack {
       signInAliases: {
         email: true,
       },
+      passwordPolicy: {
+        minLength: 8,
+      },
       lambdaTriggers: {
         customMessage: customMessageTriggerLambda,
       },

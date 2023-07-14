@@ -39,14 +39,18 @@ export const handler = async (
   try {
     switch (event.triggerSource) {
       case "CustomMessage_AdminCreateUser": {
+        const url =
+          "https://cognito-sample-app.vercel.app/new-password-setting";
         event.response.emailMessage = `
             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br>
             管理者から招待されました<br>
             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br>
-            仮パスワードでログインを実施した後、パスワードの再設定をお願いします。<br>
+            以下のリンクの遷移先から必要項目を入力の上、パスワードの再設定をお願いします。<br>
             <br>
             メールアドレス: ${event.request.usernameParameter}<br>
             仮パスワード: ${event.request.codeParameter}<br>
+            <br>
+            ${url}<br>
             <br>
             認証コードの有効期限は7日間になります。<br>
             期限を過ぎると記載のURLから登録できなくなるのでご注意ください。<br>
