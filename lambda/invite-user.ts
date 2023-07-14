@@ -8,6 +8,31 @@ const client = new CognitoIdentityProviderClient({
   region: process.env["REGION"] || "ap-northeast-1",
 });
 
+const adminCreateUser = async (email: string) => {
+  try {
+    const input = {
+      UserPoolId: process.env["USER_POOL_ID"], // required
+      Username: email, // required
+    };
+    await client.send(new AdminCreateUserCommand(input));
+  } catch (err: any) {
+    // すでに招待済みのユーザーが存在する場合は、再送信する
+    if (err.__type === "UsernameExistsException") {
+      const input = {
+        UserPoolId: process.env["USER_POOL_ID"], // required
+        Username: email as string, // required
+        MessageAction: "RESEND",
+      };
+      await client.send(new AdminCreateUserCommand(input));
+
+      return;
+    }
+
+    console.error(err);
+    throw err;
+  }
+};
+
 export const handler = async (event: APIGatewayEvent) => {
   const parsedBody = JSON.parse(event.body || "");
   if (!parsedBody.email) {
@@ -37,18 +62,14 @@ export const handler = async (event: APIGatewayEvent) => {
   }
 
   try {
-    const input = {
-      UserPoolId: process.env["USER_POOL_ID"], // required
-      Username: parsedBody.email as string, // required
-    };
-    await client.send(new AdminCreateUserCommand(input));
+    await adminCreateUser(parsedBody.email);
 
     return {
       statusCode: 200,
       headers: {
-        "Access-Control-Allow-Origin" : "*" // Required for CORS support to work
+        "Access-Control-Allow-Origin": "*", // Required for CORS support to work
       },
-      body: JSON.stringify({ "message": "Success" })
+      body: JSON.stringify({ message: "Success" }),
     };
   } catch (error: any) {
     console.error(error);
