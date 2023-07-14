@@ -40,7 +40,7 @@ export const handler = async (
     switch (event.triggerSource) {
       case "CustomMessage_AdminCreateUser": {
         const url =
-          "https://cognito-sample-app.vercel.app/new-password-setting";
+          `https://${process.env["DOMAIN"]}/new-password-setting`;
         event.response.emailMessage = `
             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br>
             管理者から招待されました<br>
