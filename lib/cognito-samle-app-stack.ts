@@ -24,7 +24,7 @@ export class CognitoSamleAppStack extends cdk.Stack {
         entry: "lambda/custom-message-trigger.ts",
         runtime: Runtime.NODEJS_18_X,
         environment: {
-          DOMAIN: "https://main.dw58g1y6iia2s.amplifyapp.com/",
+          DOMAIN: "https://main.d2a3weum8mn64g.amplifyapp.com",
         },
       }
     );

@@ -39,8 +39,8 @@ export const handler = async (
   try {
     switch (event.triggerSource) {
       case "CustomMessage_AdminCreateUser": {
-        const url =
-          `https://${process.env["DOMAIN"]}/new-password-setting`;
+        const url = `${process.env["DOMAIN"]}/new-password-setting`;
+
         event.response.emailMessage = `
             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br>
             管理者から招待されました<br>

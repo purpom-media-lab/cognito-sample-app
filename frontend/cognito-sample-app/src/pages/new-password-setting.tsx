@@ -7,6 +7,7 @@ import {
   CognitoUser,
   CognitoUserPool,
 } from "amazon-cognito-identity-js";
+import { useRouter } from "next/router";
 
 // ----------------------------------------------------------------------
 
@@ -22,6 +23,8 @@ const userPool = new CognitoUserPool({
 // ----------------------------------------------------------------------
 
 export default function NewPasswordSetting() {
+  const { push } = useRouter();
+
   const handleSubmit = async (event: any) => {
     if (event.currentTarget.newPassword.value.length < 8) {
       alert("パスワードは8文字以上で入力してください。");
@@ -68,7 +71,7 @@ export default function NewPasswordSetting() {
             // User authentication was successful
 
             alert("パスワードの更新に成功しました。");
-            return;
+            push("/");
           },
 
           onFailure: function (err) {
