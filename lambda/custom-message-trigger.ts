@@ -41,6 +41,7 @@ export const handler = async (
       case "CustomMessage_AdminCreateUser": {
         const url = `${process.env["DOMAIN"]}/new-password-setting`;
 
+        // Cognitoの仕様上必ずevent.request.usernameParameterとevent.request.codeParameterをメール文中に記載する必要がある。
         event.response.emailMessage = `
             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br>
             管理者から招待されました<br>

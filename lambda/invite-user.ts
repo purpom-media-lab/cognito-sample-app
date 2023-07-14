@@ -10,9 +10,12 @@ const client = new CognitoIdentityProviderClient({
 
 const adminCreateUser = async (email: string) => {
   try {
+    // こちらで生成した仮パスワードを渡すこともできる
+    // ref: https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminCreateUser.html
     const input = {
       UserPoolId: process.env["USER_POOL_ID"], // required
       Username: email, // required
+      // TemporaryPassword: 'STRING_VALUE',
     };
     await client.send(new AdminCreateUserCommand(input));
   } catch (err: any) {
@@ -22,6 +25,7 @@ const adminCreateUser = async (email: string) => {
         UserPoolId: process.env["USER_POOL_ID"], // required
         Username: email as string, // required
         MessageAction: "RESEND",
+        // TemporaryPassword: 'STRING_VALUE',
       };
       await client.send(new AdminCreateUserCommand(input));
 
