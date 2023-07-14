@@ -95,6 +95,7 @@ export default function NewPasswordSetting() {
           <Typography variant="h4" textAlign="center">
             パスワード更新
           </Typography>
+          {/** クエリーパラメータにメールアドレスと仮パスワード設定してそこから取得するようにしても良いかも */}
           <TextField name="email" placeholder="メールアドレスを入力" required />
           <TextField
             name="oldPassword"
