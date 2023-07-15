@@ -39,14 +39,14 @@ export const handler = async (
   try {
     switch (event.triggerSource) {
       case "CustomMessage_AdminCreateUser": {
-        const url = `${process.env["DOMAIN"]}/new-password-setting`;
+        const url = `${process.env["DOMAIN"]}/login`;
 
         // Cognitoの仕様上必ずevent.request.usernameParameterとevent.request.codeParameterをメール文中に記載する必要がある。
         event.response.emailMessage = `
             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br>
             管理者から招待されました<br>
             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━<br>
-            以下のリンクの遷移先から必要項目を入力の上、パスワードの再設定をお願いします。<br>
+            以下の情報でログインを実施し、パスワードの再設定をお願いします。<br>
             <br>
             メールアドレス: ${event.request.usernameParameter}<br>
             仮パスワード: ${event.request.codeParameter}<br>
