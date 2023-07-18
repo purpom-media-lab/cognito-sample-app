@@ -1,14 +1,12 @@
-# Welcome to your CDK TypeScript project
+# 使い方
 
-This is a blank project for CDK development with TypeScript.
+## ユーザーの招待方法
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+1. トップページから招待したいユーザーのメールアドレスを入力すると、招待用のメールが送信される。
 
-## Useful commands
+## 招待を受けたユーザーの認証方法
 
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `cdk deploy`      deploy this stack to your default AWS account/region
-* `cdk diff`        compare deployed stack with current state
-* `cdk synth`       emits the synthesized CloudFormation template
+1. 受け取った招待メールに記載された仮パスワードをもとに、ログイン画面からログインを実施する。
+2. パスワード再設定画面に遷移するので、そこで新しいパスワードを入力して認証を完了する。
+3. その後、設定したパスワードを使ってログイン画面からログインができるようになる。
+
