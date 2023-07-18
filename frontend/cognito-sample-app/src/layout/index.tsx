@@ -6,17 +6,18 @@ type Props = {
 
 export default function Layout({ children }: Props) {
   return (
-    <>
+    <Box sx={{ width: "100%", height: "100%" }}>
       <AppBar>
         <Toolbar>Cognito Sample App</Toolbar>
       </AppBar>
-      <Container component="main">
+      <Container component="main" sx={{ width: "100%", height: "100%" }}>
         <Stack
           sx={{
-            m: "auto",
+            width: "100%",
+            height: "100%",
             maxWidth: 400,
+            m: "auto",
             justifyContent: "center",
-            minHeight: "100vh",
           }}
         >
           {children}
@@ -27,6 +28,6 @@ export default function Layout({ children }: Props) {
           © 2023 Cognito Sample App
         </Toolbar>
       </Box>
-    </>
+    </Box>
   );
 }
